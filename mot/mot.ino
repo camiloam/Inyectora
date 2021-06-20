@@ -16,8 +16,9 @@ uint8_t const color_1[] = {102, 219, 255};
 uint8_t const color_2[] = {29, 169, 245};
 uint8_t const color_3[] = {54, 208, 255};
 
-uint8_t* const list_plasticos[] = {"P1","P2","P3","P4","P5","P6","P7","P8","P9","P10","P11","P12","P13",
-                              "P14","P15","P16","P17","P18","P19","P20","P21","P22","P23","P24","P25"};
+uint8_t* const list_plasticos[] = {"Poliacetal","Acrilico","ABS","Acetato de celulosa","PTFE","Nylon-6",
+                                    "Policarbonato","PET","Polietileno (baja densidad)","Polietileno (alta densidad)",
+                                    "Polipropileno","Poliestireno","PVC"};
 //uint16_t const negro = 0, blanco = 0xFFFF;
 enum colores {negro = 0x0000, blanco = 0xFFFF};
 
@@ -83,18 +84,19 @@ void loop() {
     show_string("ChemiTech", WIDTH - 120, 5, 2, blanco);
     
     show_string("Elija el plastico:", 10, 50, 2, negro);
-
-    my_lcd.Set_Draw_color(color_1[0], color_1[1], color_1[2]);
+    my_lcd.Set_Draw_color(color_3[0], color_3[1], color_3[2]);
     my_lcd.Fill_Rectangle(10, 75, WIDTH - 10, HEIGHT - 10);
-
+    
+    my_lcd.Set_Draw_color(color_1[0], color_1[1], color_1[2]);
+    my_lcd.Fill_Rectangle(10, 75, WIDTH - 10, 104);  
+    for (int i = 0; i < sizeof(list_plasticos)/sizeof(list_plasticos[0]) ; i++){
+       show_string(list_plasticos[i], 20, 81 + 30*i, 2, blanco);
+    }
+    my_lcd.Set_Draw_color(color_2[0], color_2[1], color_2[2]);
+    my_lcd.Fill_Rectangle(WIDTH - 15, 75, WIDTH - 10, 150);
     
 
-    
-
-    
-
-    
-
+    item  = 0;
     while (pantalla == plasticos) {
 
       str = readS();
@@ -110,6 +112,23 @@ void loop() {
       else if (str == '3') {
         pantalla = datos;
       }
+
+      if (str == '+'){
+        if (item > 0){
+          item += 1;
+        }
+        Actualizar_plasticos();
+      }
+
+      if (str == '+'){
+        if (item > 0){
+          item += 1;
+        }
+        Actualizar_plasticos();
+      }
+
+
+      
     }
 
   }
@@ -226,4 +245,14 @@ void Rectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t *str, uin
   int16_t posy = y2 - y1 + 1 - 7 * csize;
   show_string(str, x1 + posx / 2, y1 + posy / 2, csize, cText);
   show_string(str, x1 + posx / 2, y1 + posy / 2, csize, cText);
+}
+
+void Actualizar_plasticos(int item){
+  my_lcd.Set_Draw_color(color_1[0], color_1[1], color_1[2]);
+  my_lcd.Fill_Rectangle(10, 75 + 30*item, WIDTH - 10, 104);  
+  for (int i = 0; i < sizeof(list_plasticos)/sizeof(list_plasticos[0]) ; i++){
+     show_string(list_plasticos[i], 20, 81 + 30*i, 2, blanco);
+  }
+  my_lcd.Set_Draw_color(color_2[0], color_2[1], color_2[2]);
+  my_lcd.Fill_Rectangle(WIDTH - 15, 75, WIDTH - 10, 150);
 }
